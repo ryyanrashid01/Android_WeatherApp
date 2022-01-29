@@ -4,10 +4,10 @@ The weatherapi.com API is used by the android application to retrieve current we
 ## Key Points
 - The android application is developed in **JAVA** programming language with user-friendly
 graphical user interface in a team of four members:
-1. Mohamad Firdaus Bin Kasah Hamid@Kasmidy
-2. Ahmad Alif Danial Bin Ahmad Shobri
-3. Farah Afifah Binti Zulkefli
-4. Mohammad Ryyan Rashid
+a. Mohamad Firdaus Bin Kasah Hamid@Kasmidy
+b. Ahmad Alif Danial Bin Ahmad Shobri
+c. Farah Afifah Binti Zulkefli
+d. Mohammad Ryyan Rashid
 -  The latest Human-computer interaction (HCI) principles were practiced while designing,
 assessing and implementing the application.
 
