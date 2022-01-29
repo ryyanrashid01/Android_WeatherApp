@@ -40,12 +40,36 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
+    private RelativeLayout homeRL;
+    private ProgressBar loadingPB;
+    private TextView cityNameTV, temperatureTV, conditionTV;
+    private TextInputEditText cityEdt;
+    private ImageView backIV, iconIV, searchIV;
+    private RecyclerView weatherRV;
+    private ArrayList<WeatherRVModel> weatherRVModelArrayList;
+    private WeatherRVAdapter weatherRVAdapter;
     private LocationManager locationManager;
+    private int PERMISSION_CODE = 1;
     private String cityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        setContentView(R.layout.activity_main);
+        homeRL = findViewById(R.id.idRLHome);
+        loadingPB = findViewById(R.id.idPBLoading);
+        cityNameTV = findViewById(R.id.idTVCityName);
+        temperatureTV = findViewById(R.id.idTVTemperature);
+        conditionTV = findViewById(R.id.idTVCondition);
+        weatherRV = findViewById(R.id.RVWeather);
+        cityEdt = findViewById(R.id.idEdtCity);
+        backIV = findViewById(R.id.idIVBack);
+        iconIV = findViewById(R.id.idIVIcon);
+        searchIV = findViewById(R.id.idIVSearch);
+        weatherRVModelArrayList = new ArrayList<>();
+        weatherRVAdapter = new WeatherRVAdapter(this, weatherRVModelArrayList);
+        weatherRV.setAdapter(weatherRVAdapter);
         
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -63,10 +87,9 @@ public class MainActivity extends AppCompatActivity {
         Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
         try {
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 10);
-    
-         for (Address adr : addresses) {
+            for (Address adr : addresses) {
                 if (adr != null) {
-                  String city = adr.getLocality();
+                    String city = adr.getLocality();
                     if (city != null && !city.equals("")) {
                         cityName = city;
                     } else {
@@ -75,11 +98,50 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-    
         } catch (IOException e) {
             e.printStackTrace();
         }
         return cityName;
     }
     
+    private void getWeatherInfo (String cityName) {
+        String url = "https://api.weatherapi.com/v1/forecast.json?key=e0bc2929016a4ee787b103213222601&q=" + cityName + "&days=&aqi=yes&alerts=yes";
+        cityNameTV.setText(cityName);
+        Picasso.get().setLoggingEnabled(true);
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                loadingPB.setVisibility(View.GONE);
+                homeRL.setVisibility(View.VISIBLE);
+                weatherRVModelArrayList.clear();
+                try {
+                    String temperature = response.getJSONObject("current").getString("temp_c");
+                    temperatureTV.setText(temperature+"°C");
+                    int isDay = response.getJSONObject("current").getInt("is_day");
+                    String condition = response.getJSONObject("current").getJSONObject("condition").getString("text");
+                    String conditionIcon = response.getJSONObject("current").getJSONObject("condition").getString("icon");
+                    Log.e("Icon", conditionIcon);
+                    Picasso.get().load("https:".concat(conditionIcon)).into(iconIV);
+                    conditionTV.setText(condition);
+                    if (isDay == 1) {
+                        // Morning
+                        Picasso.get().load("https://images.unsplash.com/photo-1622396480958-37710377a507?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80").into(backIV);
+                    } else {
+                        Picasso.get().load("https://images.unsplash.com/photo-1507400492013-162706c8c05e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=718&q=80").into(backIV);
+                    }
+                } catch (JSONException e) {
+                    Log.e("error", e.getMessage());
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("error", error.getMessage());
+                Toast.makeText(MainActivity.this, "Please enter a valid city name.", Toast.LENGTH_LONG).show();
+            }
+        });
+        requestQueue.add(jsonObjectRequest);
+    }
 }
