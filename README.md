@@ -30,7 +30,7 @@ assessing and implementing the application.
     </p>
 3. Results for the seached city <br>
     <p align="center">
-        <img src="https://github.com/ryyanrashid01/CAT201_WeatherApp/blob/main/screenshots/landingScreen.jpg" alt="Results for city" style="width:200px;"/>
+        <img src="https://github.com/ryyanrashid01/CAT201_WeatherApp/blob/main/screenshots/cityResults.jpg" alt="Results for city" style="width:200px;"/>
     </p>
 
 The background picture of the application's landing page varies based on the time of day. A image of a blue sky will be displayed if it is day at the user's location or in the city that the user has searched. If it's nighttime, an image of a starry night will be displayed.
