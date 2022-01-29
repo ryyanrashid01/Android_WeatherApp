@@ -81,6 +81,18 @@ public class MainActivity extends AppCompatActivity {
         getWeatherInfo(cityName);
     }
     
+        searchIV.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            String city = cityEdt.getText().toString();
+            if (city.isEmpty()){
+                Toast.makeText(MainActivity.this, "Please enter city name.", Toast.LENGTH_SHORT).show();
+            } else {
+                cityNameTV.setText(cityName);
+                getWeatherInfo(city);
+            }
+        }
+    });
     
     private String getCityName(double longitude, double latitude) {
         String cityName = "Not found";
