@@ -15,6 +15,13 @@ assessing and implementing the application.
 - Picasso: https://square.github.io/picasso/
 - Volley: https://developer.android.com/training/volley
 - Google Play Services Location: https://developers.google.com/android/guides/setup
+```
+dependencies {
+    implementation 'com.squareup.picasso:picasso:2.8'
+    implementation 'com.android.volley:volley:1.2.1'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
+}
+```
 
 ## Releases
 - v_1.0.0 | January 29, 2022 | The first release with current weather and weather forecast features.
