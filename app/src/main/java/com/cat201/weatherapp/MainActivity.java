@@ -129,7 +129,20 @@ public class MainActivity extends AppCompatActivity {
                         Picasso.get().load("https://images.unsplash.com/photo-1622396480958-37710377a507?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80").into(backIV);
                     } else {
                         Picasso.get().load("https://images.unsplash.com/photo-1507400492013-162706c8c05e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=718&q=80").into(backIV);
+                    }               
+                    JSONObject forecastObj = response.getJSONObject("forecast");
+                    JSONObject forecast0 = forecastObj.getJSONArray("forecastday").getJSONObject(0);
+                    JSONArray hourArray = forecast0.getJSONArray("hour");
+
+                    for (int i = 0; i < hourArray.length(); i++) {
+                        JSONObject hourObj = hourArray.getJSONObject(i);
+                        String time = hourObj.getString("time");
+                        String temper = hourObj.getString("temp_c");
+                        String img = hourObj.getJSONObject("condition").getString("icon");
+                        String wind = hourObj.getString("wind_kph");
+                        weatherRVModelArrayList.add(new WeatherRVModel(time, temper, img, wind));
                     }
+                    weatherRVAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     Log.e("error", e.getMessage());
                     e.printStackTrace();
