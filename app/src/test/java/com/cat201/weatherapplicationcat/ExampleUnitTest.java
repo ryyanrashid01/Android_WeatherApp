@@ -1,4 +1,4 @@
-package com.cat201.weatherapp;
+package com.cat201.weatherapplicationcat;
 
 import org.junit.Test;
 

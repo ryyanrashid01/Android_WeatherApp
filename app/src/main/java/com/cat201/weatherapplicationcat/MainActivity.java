@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_main);
-        homeRL = findViewById(R.id.idRLHome);
+        homeRL= findViewById(R.id.idRLHome);
         loadingPB = findViewById(R.id.idPBLoading);
         cityNameTV = findViewById(R.id.idTVCityName);
         temperatureTV = findViewById(R.id.idTVTemperature);
